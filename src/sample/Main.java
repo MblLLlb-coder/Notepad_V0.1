@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -34,12 +35,15 @@ public class Main extends Application {
         bName.setLayoutX(150);
         bName.setLayoutY(30);
         bName.setVisible(false);
-
+        Label description = new Label();
+        description.setText("1-create the note\n2-Put some text in your note,\nname it and then press the save button\n(OK will save your note)");
+description.setLayoutX(5);
+description.setLayoutY(250);
 
         bCreate.setOnAction(actionEvent -> {
             note.setVisible(true);
             note.setMaxSize(600, 200);
-            note.setLayoutY(80);//YY
+            note.setLayoutY(65);//YY
 
         });
         bSave.setOnAction(actionEvent -> {
@@ -62,15 +66,27 @@ public class Main extends Application {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
-
+                String s2 = " ";
+note.deleteText(0,s.length());
 
             });
 
 
         });
         bOpen.setOnAction(actionEvent -> {
+
             note.setVisible(true);
             name.setVisible(true);
+            name.setLayoutY(30);
+            name.setLayoutX(0);
+            note.setLayoutY(80);//YY
+            bName.setVisible(true);
+            name.setPrefColumnCount(11);
+            bSave.setLayoutX(80);
+            bOpen.setLayoutX(150);
+            bName.setLayoutX(150);
+            bName.setLayoutY(30);
+
             bName.setOnAction(actionEvent1 -> {
                 String name1 = name.getText();
 
@@ -81,20 +97,22 @@ public class Main extends Application {
 
                 try (FileReader reader = new FileReader("C:/Users/Мышь/Desktop/" + name1 + ".npz")) {
                     Scanner sc = new Scanner(reader);
-
+                    String st = note.getText();
                     while (sc.hasNextLine()) {
                         String s = sc.nextLine();
                         note.appendText(s);
 
-                        // note.appendText((String)Text);
+                        note.deleteText(0,st.length());
+
                     }
 
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+
             });
         });
-        Group gr = new Group(bCreate, bOpen, bSave, note, bName, name);
+        Group gr = new Group(bCreate, bOpen, bSave, note, bName, name,description);
 
 
         primaryStage.setScene(new Scene(gr, 600, 400));
