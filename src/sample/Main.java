@@ -36,7 +36,7 @@ public class Main extends Application {
         bName.setLayoutY(30);
         bName.setVisible(false);
         Label description = new Label();
-        description.setText("1-create the note\n2-Put some text in your note,\nname it and then press the save button\n(OK will save your note)");
+        description.setText("1-create the note\n2-Put some text in your note,\n press the save button and name the note \n(OK will save your note)");
 description.setLayoutX(5);
 description.setLayoutY(250);
 
