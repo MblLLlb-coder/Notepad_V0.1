@@ -9,6 +9,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import java.io.*;
 import java.util.Scanner;
 
@@ -24,7 +27,22 @@ public class Main extends Application {
         Button bOpen = new Button("Open note");
         Button bSave = new Button("Save note");
         Button bName = new Button("OK");
-
+        Button bMusic = new Button("Play Music");
+        //Image img = new Image();
+        bMusic.setLayoutX(225);
+        bMusic.setLayoutY(0);
+        bMusic.setOnAction(actionEvent -> {
+                    try {
+                        File sf = new File("E:/Загрузки/*NameOfMusic*.wav");//Path to music you need(.wav is required)
+                        AudioInputStream ais = AudioSystem.getAudioInputStream(sf);
+                        Clip clip = AudioSystem.getClip();
+                        clip.open(ais);
+                        clip.setFramePosition(0);
+                        clip.start();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                });
         TextField name = new TextField();
         name.setLayoutY(30);
         name.setLayoutX(0);
@@ -57,12 +75,13 @@ description.setLayoutY(250);
                     System.exit(54);
                 }
 
-                try (FileWriter fw = new FileWriter("C:/Users/Мышь/Desktop/" + NameofNote + ".npz")) {
+                try (FileWriter fw = new FileWriter("C:/Users/Мышь/Desktop/" + NameofNote.trim() + ".npz")) {//you can replace .npz with simple .txt
 
                     fw.write(s);
                     fw.append('\n');
 
                     fw.flush();
+
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
@@ -79,7 +98,7 @@ note.deleteText(0,s.length());
             name.setVisible(true);
             name.setLayoutY(30);
             name.setLayoutX(0);
-            note.setLayoutY(80);//YY
+            note.setLayoutY(65);//YY
             bName.setVisible(true);
             name.setPrefColumnCount(11);
             bSave.setLayoutX(80);
@@ -95,7 +114,7 @@ note.deleteText(0,s.length());
                 nameOffile.setLayoutY(30);
 
 
-                try (FileReader reader = new FileReader("C:/Users/Мышь/Desktop/" + name1 + ".npz")) {
+                try (FileReader reader = new FileReader("C:/Users/Мышь/Desktop/" + name1.trim() + ".npz")) {//you can replace .np for simple .txt
                     Scanner sc = new Scanner(reader);
                     String st = note.getText();
                     while (sc.hasNextLine()) {
@@ -112,11 +131,13 @@ note.deleteText(0,s.length());
 
             });
         });
-        Group gr = new Group(bCreate, bOpen, bSave, note, bName, name,description);
+        Group gr = new Group(bCreate, bOpen, bSave, note, bName, name,description, bMusic);
 
 
         primaryStage.setScene(new Scene(gr, 600, 400));
         primaryStage.show();
+
+
     }
 
     public static void main(String[] args) {
